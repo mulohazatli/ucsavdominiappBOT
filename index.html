@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUBG UC Store</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #0d1117; color: #f3f4f6; font-family: system-ui, -apple-system, sans-serif; }
+        .gold-border { border-color: #f59e0b; }
+        .gold-text { color: #f59e0b; }
+        .gold-bg { background-color: #f59e0b; }
+        .card-bg { background: rgba(22, 27, 34, 0.8); backdrop-filter: blur(8px); }
+    </style>
+</head>
+<body class="pb-24">
+    <!-- Header -->
+    <div class="p-4 card-bg border-b border-gray-800 sticky top-0 z-40 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-bolt gold-text text-xl"></i>
+            <h1 class="text-lg font-bold tracking-wide">PUBG UC SHOP</h1>
+        </div>
+        <span class="text-xs bg-amber-500/10 text-amber-500 px-2.5 py-1 rounded-full border border-amber-500/20 font-medium">
+            Aksiya ketmoqda ⚡️
+        </span>
+    </div>
+
+    <!-- Banner Info -->
+    <div class="p-4">
+        <div class="bg-gradient-to-r from-amber-900/30 to-amber-600/10 border border-amber-500/30 rounded-xl p-3 text-xs text-amber-200 flex items-start space-x-2">
+            <i class="fa-solid fa-circle-info text-amber-400 mt-0.5"></i>
+            <div>
+                <p class="font-semibold">Ishonchli va tezkor UC yetkazish!</p>
+                <p class="text-amber-300/80 mt-0.5">Sobitiyaga javob berilmaydi, UC to'liq tushishiga 100% kafolat beriladi.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="px-4 mb-4">
+        <div class="grid grid-cols-2 gap-2 bg-gray-900/80 p-1 rounded-xl border border-gray-800">
+            <button id="tab-id" onclick="switchTab('id')" class="py-2.5 text-xs font-bold rounded-lg gold-bg text-black transition-all">
+                🆔 Global (ID orqali)
+            </button>
+            <button id="tab-login" onclick="switchTab('login')" class="py-2.5 text-xs font-bold rounded-lg text-gray-400 transition-all">
+                🔑 Login/Parol (Arzon)
+            </button>
+        </div>
+    </div>
+
+    <!-- Content ID Packages -->
+    <div id="content-id" class="px-4 space-y-2">
+        <!-- JS dinamik joylaydi -->
+    </div>
+
+    <!-- Content Login Packages -->
+    <div id="content-login" class="px-4 space-y-2 hidden">
+        <!-- JS dinamik joylaydi -->
+    </div>
+
+    <!-- Order Modal -->
+    <div id="modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="w-full max-w-md bg-gray-900 border border-gray-800 rounded-t-2xl sm:rounded-2xl p-5 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h3 class="font-bold text-sm text-amber-400" id="modal-title">Buyurtmani rasmiylashtirish</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <!-- Card Info Box -->
+            <div class="bg-gray-800/60 p-3 rounded-xl border border-gray-700 space-y-1">
+                <p class="text-xs text-gray-400">To'lov uchun karta raqami:</p>
+                <div class="flex justify-between items-center">
+                    <span class="font-mono text-sm font-bold text-amber-400 tracking-wider" id="card-num">9860160633632619</span>
+                    <button onclick="copyCard()" class="text-xs bg-amber-500/20 text-amber-400 px-2 py-1 rounded hover:bg-amber-500/30"><i class="fa-regular fa-copy"></i> Nusxalash
+                    </button>
+                </div>
+                <p class="text-xs text-gray-300 font-medium">Egasining ismi: <span class="text-white">Javohir Abdullayev</span></p>
+            </div>
+
+            <form id="orderForm" onsubmit="submitOrder(event)" class="space-y-3">
+                <div id="input-fields-id" class="space-y-3">
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">PUBG Player ID *</label>
+                        <input type="number" id="pubgId" placeholder="Masalan: 5123456789" required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:border-amber-500 outline-none">
+                    </div>
+                </div>
+
+                <div id="input-fields-login" class="space-y-3 hidden">
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Tizimga kirish (FB / Twitter / VK) *</label>
+                        <input type="text" id="loginAcc" placeholder="Telefon yoki Pochta" class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:border-amber-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Parol *</label>
+                        <input type="password" id="loginPass" placeholder="Hisob paroli" class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:border-amber-500 outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Telegram taxallusingiz yoki Telefon *</label>
+                    <input type="text" id="userContact" placeholder="@username yoki +998..." required class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:border-amber-500 outline-none">
+                </div>
+
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">To'lov cheki rasmi (Chek skriningiz) *</label>
+                    <input type="file" id="receiptImg" accept="image/*" required class="w-full text-xs text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500/20 file:text-amber-400 hover:file:bg-amber-500/30">
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="w-full gold-bg text-black font-bold py-3 rounded-xl hover:opacity-90 text-sm shadow-lg shadow-amber-500/10">
+                        To'lov qildim va Yuborish ✅
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram?.WebApp;
+        if(tg) { tg.expand(); }
+
+        const idPackages = [
+            { uc: "60 UC", price: "13.000", badge: "" },
+            { uc: "120 UC", price: "26.000", badge: "" },
+            { uc: "180 UC", price: "39.000", badge: "" },
+            { uc: "325 UC", price: "60.000", badge: "RP (kupon bo'lsa) 🔥" },
+            { uc: "385 UC", price: "70.000", badge: "RP (kuponsiz) 🔥" },
+            { uc: "660 UC", price: "118.000", badge: "" },
+            { uc: "985 UC", price: "180.000", badge: "" },
+            { uc: "1320 UC", price: "230.000", badge: "" },
+            { uc: "1800 UC", price: "290.000", badge: "" },
+            { uc: "2125 UC", price: "350.000", badge: "" },
+            { uc: "2460 UC", price: "400.000", badge: "" },
+            { uc: "3850 UC", price: "560.000", badge: "" },
+            { uc: "5650 UC", price: "870.000", badge: "" },
+            { uc: "8100 UC", price: "1.150.000", badge: "" },{ uc: "11950 UC", price: "1.740.000", badge: "" },
+            { uc: "16200 UC", price: "2.300.000", badge: "" },
+            { uc: "20050 UC", price: "2.860.000", badge: "" },
+            { uc: "24300 UC", price: "3.300.000", badge: "" },
+            { uc: "40500 UC", price: "5.800.000", badge: "" },
+            { uc: "81000 UC", price: "11.600.000", badge: "" }
+        ];
+
+        const loginPackages = [
+            { uc: "8100 UC", price: "1.000.000", badge: "Arzon narx 👍" },
+            { uc: "16.200 UC", price: "2.000.000", badge: "Arzon narx 👍" },
+            { uc: "24.300 UC", price: "3.000.000", badge: "Arzon narx 👍" }
+        ];
+
+        let selectedPackage = null;
+        let selectedType = 'id';
+
+        function renderPackages() {
+            const containerId = document.getElementById('content-id');
+            containerId.innerHTML = idPackages.map(pkg => 
+                <div onclick="openModal('${pkg.uc}', '${pkg.price}', 'id')" class="p-3.5 card-bg border border-gray-800 rounded-xl flex items-center justify-between hover:border-amber-500/50 transition-all cursor-pointer">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-9 h-9 rounded-lg gold-bg/10 flex items-center justify-center border border-amber-500/20">
+                            <i class="fa-solid fa-coins gold-text text-sm"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-sm text-white">${pkg.uc}</div>
+                            ${pkg.badge ? <span class="text-[10px] text-amber-400 font-medium">${pkg.badge}</span> : ''}
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-bold text-sm gold-text">${pkg.price} so'm</div>
+                        <span class="text-[10px] text-gray-500">Sotib olish →</span>
+                    </div>
+                </div>
+            ).join('');
+
+            const containerLogin = document.getElementById('content-login');
+            containerLogin.innerHTML = loginPackages.map(pkg => 
+                <div onclick="openModal('${pkg.uc}', '${pkg.price}', 'login')" class="p-3.5 card-bg border border-gray-800 rounded-xl flex items-center justify-between hover:border-amber-500/50 transition-all cursor-pointer">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-9 h-9 rounded-lg gold-bg/10 flex items-center justify-center border border-amber-500/20">
+                            <i class="fa-solid fa-key gold-text text-sm"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-sm text-white">${pkg.uc}</div>
+                            <span class="text-[10px] text-emerald-400 font-medium">${pkg.badge}</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-bold text-sm gold-text">${pkg.price} so'm</div>
+                        <span class="text-[10px] text-gray-500">Sotib olish →</span>
+                    </div>
+                </div>
+            ).join('');
+        }
+
+        function switchTab(type) {
+            selectedType = type;
+            const btnId = document.getElementById('tab-id');
+            const btnLogin = document.getElementById('tab-login');
+            const contentId = document.getElementById('content-id');
+            const contentLogin = document.getElementById('content-login');
+
+            if(type === 'id') {
+                btnId.className = "py-2.5 text-xs font-bold rounded-lg gold-bg text-black transition-all";
+                btnLogin.className = "py-2.5 text-xs font-bold rounded-lg text-gray-400 transition-all";contentId.classList.remove('hidden');
+                contentLogin.classList.add('hidden');
+            } else {
+                btnLogin.className = "py-2.5 text-xs font-bold rounded-lg gold-bg text-black transition-all";
+                btnId.className = "py-2.5 text-xs font-bold rounded-lg text-gray-400 transition-all";
+                contentLogin.classList.remove('hidden');
+                contentId.classList.add('hidden');
+            }
+        }
+
+        function openModal(uc, price, type) {
+            selectedPackage = { uc, price, type };
+            document.getElementById('modal-title').innerText = ${uc} - ${price} so'm;
+            
+            if(type === 'id') {
+                document.getElementById('input-fields-id').classList.remove('hidden');
+                document.getElementById('input-fields-login').classList.add('hidden');
+                document.getElementById('pubgId').required = true;
+                document.getElementById('loginAcc').required = false;
+                document.getElementById('loginPass').required = false;
+            } else {
+                document.getElementById('input-fields-id').classList.add('hidden');
+                document.getElementById('input-fields-login').classList.remove('hidden');
+                document.getElementById('pubgId').required = false;
+                document.getElementById('loginAcc').required = true;
+                document.getElementById('loginPass').required = true;
+            }
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+
+        function copyCard() {
+            navigator.clipboard.writeText('9860160633632619');
+            if(tg) tg.showAlert("Karta raqami nusxalandi!");
+            else alert("Karta raqami nusxalandi!");
+        }
+
+        function submitOrder(e) {
+            e.preventDefault();
+            const contact = document.getElementById('userContact').value;
+            const pubgId = document.getElementById('pubgId').value;
+            const loginAcc = document.getElementById('loginAcc').value;
+            const loginPass = document.getElementById('loginPass').value;
+
+            const orderData = {
+                action: 'new_pubg_order',
+                order: {
+                    uc: selectedPackage.uc,
+                    price: selectedPackage.price,
+                    type: selectedPackage.type,
+                    contact: contact,
+                    pubgId: pubgId || null,
+                    loginAcc: loginAcc || null,
+                    loginPass: loginPass || null,
+                    date: new Date().toLocaleString()
+                }
+            };
+
+            if(tg && tg.sendData) {
+                tg.sendData(JSON.stringify(orderData));
+                tg.close();
+            } else {
+                alert("Buyurtma yuborildi!");
+                closeModal();
+            }
+        }
+
+        renderPackages();
+    </script>
+</body>
+</html>
