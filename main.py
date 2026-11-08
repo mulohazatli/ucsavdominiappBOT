@@ -8,9 +8,9 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 from aiohttp import web
 
 # --- SOZLAMALAR ---
-BOT_TOKEN = os.getenv("BOT_TOKEN", "YOUR_BOT_TOKEN_HERE")
-ADMIN_ID = int(os.getenv("ADMIN_ID", "123456789"))  # Telegram Admin ID ngiz
-WEBAPP_URL = os.getenv("WEBAPP_URL", "https://your-app.onrender.com")
+BOT_TOKEN = os.getenv("BOT_TOKEN", "8967368321:AAETZvk_VQQGWXo34sYl8HWOjz2VD9V8wbM")
+ADMIN_ID = int(os.getenv("ADMIN_ID", "8971381600"))  # Telegram Admin ID ngiz
+WEBAPP_URL = os.getenv("WEBAPP_URL", "https://mulohazatli.github.io/ucsavdominiappBOT/")
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN)
